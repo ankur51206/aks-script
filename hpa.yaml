@@ -1,0 +1,78 @@
+#service
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-app
+  labels:
+    name: node-app
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: 3000
+    protocol: TCP
+  selector:
+    app: node-app
+
+
+---
+
+# Deployment 
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-app
+spec:
+  selector:
+    matchLabels:
+      app: node-app
+  replicas: 1
+  revisionHistoryLimit: 3
+  template:
+    metadata:
+      labels:
+        app: node-app
+    spec:
+      containers:
+        - name: containername
+          image: acr1name.azurecr.io/reponame:latest
+          imagePullPolicy: 'Always'
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 250m
+              memory: 500Mi
+            requests:
+              cpu: 250m
+              memory: 500Mi
+
+---
+#HPA
+
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: node-app
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: node-app
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: AverageValue
+          averageValue: 300Mi
