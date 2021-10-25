@@ -2,7 +2,7 @@
 
 # Cluster specific variables
 RG=(
-   rg-shafali
+   ankur
 )
 
 CLUSTER=(
@@ -10,7 +10,7 @@ CLUSTER=(
 )
 
 ACR=(
-    acr1shafali
+    ankur
 )
 
 # Common variables
