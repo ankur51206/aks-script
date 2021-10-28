@@ -2,7 +2,7 @@
 
 # Cluster specific variables
 RG=(
-   ankur
+   rgshafali
 )
 
 CLUSTER=(
@@ -10,13 +10,13 @@ CLUSTER=(
 )
 
 ACR=(
-    ankur
+    acrshafali
 )
 
 # Common variables
 VERSION=1.20.7
 ACR_SKU=Basic
-REGION=eastus
+REGION=eastus2
 VM_SIZE=Standard_B2ms
 LB_SKU=standard
 NODE_COUNT=1
@@ -42,7 +42,7 @@ do
 
         # Create Cluster
         echo "Creating cluster... This will take time, go grab a cup of coffee... "
-        az aks create -n ${CLUSTER[$i-1]} -g ${RG[$i-1]} --enable-aad --enable-azure-rbac --attach-acr ${ACR[$i-1]} \
+        az aks create -n ${CLUSTER[$i-1]} -g ${RG[$i-1]} --attach-acr ${ACR[$i-1]} \
             --vm-set-type VirtualMachineScaleSets \
             --node-count $NODE_COUNT \
             --node-vm-size $VM_SIZE\
@@ -55,8 +55,8 @@ do
         az aks update --resource-group ${RG[$i-1]} --name ${CLUSTER[$i-1]} --attach-acr ${ACR[$i-1]}
 
         # Create Service Principle
-        echo "Creating service principal..."
-        az ad sp create-for-rbac --name ${CLUSTER[$i-1]} > ./${CLUSTER[$i-1]}.json
+        #echo "Creating service principal..."
+        #az ad sp create-for-rbac --name ${CLUSTER[$i-1]} > ./${CLUSTER[$i-1]}.json
 
         echo "Cloning kubeconfig to access from local machine..."
         az aks get-credentials --resource-group ${RG[$i-1]} --name ${CLUSTER[$i-1]}
