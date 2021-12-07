@@ -2,19 +2,19 @@
 
 # Cluster specific variables
 RG=(
-   rgshafali
+   sample-gatekeeper
 )
 
 CLUSTER=(
-     hpa-cluster
+     sample-gatekeeper-cluster
 )
 
 ACR=(
-    acrshafali
+    acrgatekeeper
 )
 
 # Common variables
-VERSION=1.20.7
+VERSION=1.20.9
 ACR_SKU=Basic
 REGION=eastus2
 VM_SIZE=Standard_B2ms
